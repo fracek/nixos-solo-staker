@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ lib, inputs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -8,6 +8,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  networking.useDHCP = lib.mkForce true;
   networking.hostName = "validator01";
 
   system.stateVersion = "23.11";
