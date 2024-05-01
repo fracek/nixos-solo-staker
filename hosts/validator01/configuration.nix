@@ -7,6 +7,7 @@
   ];
 
   age.secrets.tailscale.file = ./secrets/tailscale.age;
+  age.secrets.password.file = ./secrets/password.age;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
