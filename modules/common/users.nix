@@ -19,4 +19,8 @@ in
 
   # No mutable users
   users.mutableUsers = false;
+
+  # users in trusted group are trusted by the nix-daemon
+  nix.settings.trusted-users = [ "@trusted" ];
+  users.groups.trusted = { };
 }
