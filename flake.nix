@@ -31,9 +31,21 @@
       };
     } //
     (flake-utils.lib.eachDefaultSystem (system:
+      let
+        overlays = [ agenix.overlays.default ethereum.overlays.default ];
+        pkgs = import nixpkgs {
+          inherit system overlays;
+        };
+      in
       {
         # format with `nix fmt`.
         formatter = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
+
+        devShells.default = pkgs.mkShell {
+          packages = [
+            pkgs.agenix
+          ];
+        };
       }
     ));
 }
