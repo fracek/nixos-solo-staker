@@ -8,10 +8,6 @@
 
   age.secrets.tailscale.file = ./secrets/tailscale.age;
 
-  environment.variables = {
-    TAILSCALE_TEST = config.age.secrets.tailscale.path;
-  };
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
