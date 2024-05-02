@@ -44,6 +44,7 @@
         devShells.default = pkgs.mkShell {
           packages = [
             pkgs.agenix
+            pkgs.staking-deposit-cli
           ];
         };
       }
