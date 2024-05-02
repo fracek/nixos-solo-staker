@@ -21,6 +21,7 @@
     {
       nixosModules = {
         common = ./modules/common;
+        validator = ./modules/validator;
       };
 
       nixosConfigurations = {
@@ -44,6 +45,7 @@
         devShells.default = pkgs.mkShell {
           packages = [
             pkgs.agenix
+            pkgs.cachix
             pkgs.staking-deposit-cli
           ];
         };

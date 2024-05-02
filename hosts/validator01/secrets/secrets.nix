@@ -7,4 +7,5 @@ in
 {
   "tailscale.age".publicKeys = [ host ] ++ users;
   "password.age".publicKeys = [ host ] ++ users;
+  "jwtsecret.age".publicKeys = [ host ] ++ users;
 }

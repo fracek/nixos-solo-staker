@@ -2,12 +2,26 @@
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.self.nixosModules.common
     inputs.agenix.nixosModules.default
+    inputs.self.nixosModules.common
+    inputs.self.nixosModules.validator
   ];
+
+  services.validator = {
+    enable = true;
+    chain = "holesky";
+    web3.jwtsecret = config.age.secrets.jwtsecret.path;
+  };
 
   age.secrets.tailscale.file = ./secrets/tailscale.age;
   age.secrets.password.file = ./secrets/password.age;
+  age.secrets.jwtsecret = {
+    file = ./secrets/jwtsecret.age;
+    owner = config.services.validator.user.name;
+    group = config.services.validator.user.group;
+    mode = "0440";
+  };
+
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
