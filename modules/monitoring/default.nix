@@ -35,7 +35,12 @@ let
     };
 
     exporters = {
-      debug = { };
+      prometheusremotewrite = {
+        endpoint = "\${env:PROM_ENDPOINT}";
+      };
+      loki = {
+        endpoint = "\${env:LOKI_ENDPOINT}";
+      };
     };
 
     service = {
@@ -43,13 +48,13 @@ let
         logs = {
           receivers = [ "journald" ];
           processors = [ "batch" ];
-          exporters = [ "debug" ];
+          exporters = [ "loki" ];
         };
 
         metrics = {
           receivers = [ "prometheus" ];
           processors = [ "batch" ];
-          exporters = [ "debug" ];
+          exporters = [ "prometheusremotewrite" ];
         };
       };
     };
@@ -62,6 +67,10 @@ in
     user = mkOption {
       type = types.str;
       default = "prometheus";
+    };
+
+    otel-env = mkOption {
+      type = types.path;
     };
 
     services = mkOption {
@@ -95,6 +104,7 @@ in
           ExecStart = "${lib.getExe pkgs.opentelemetry-collector-contrib} --config=file:${conf}";
           Restart = "always";
           User = cfg.user;
+          EnvironmentFile = cfg.otel-env;
           ProtectSystem = "full";
           DevicePolicy = "closed";
           NoNewPrivileges = true;

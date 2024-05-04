@@ -21,6 +21,7 @@
   services.monitoring = {
     enable = true;
     user = config.services.validator.user.name;
+    otel-env = config.age.secrets.otel-env.path;
     services = [
       {
         unit = "holesky-nethermind";
@@ -37,6 +38,12 @@
   age.secrets.password.file = ./secrets/password.age;
   age.secrets.jwtsecret = {
     file = ./secrets/jwtsecret.age;
+    owner = config.services.validator.user.name;
+    group = config.services.validator.user.group;
+    mode = "0440";
+  };
+  age.secrets.otel-env = {
+    file = ./secrets/otel-env.age;
     owner = config.services.validator.user.name;
     group = config.services.validator.user.group;
     mode = "0440";
