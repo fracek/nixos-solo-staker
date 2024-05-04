@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, ... }:
 {
   options.services.validator = with lib; {
     enable = mkEnableOption (mdDoc "Ethereum validator setup");

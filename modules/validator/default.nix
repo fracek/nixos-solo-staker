@@ -28,11 +28,14 @@ in
 
     networking.firewall = {
       # https://docs.nethermind.io/fundamentals/security/
+      # https://docs.prylabs.network/docs/prysm-usage/p2p-host-ip
       allowedUDPPorts = [
         30303
+        12000
       ];
       allowedTCPPorts = [
         30303
+        13000
       ];
     };
 
