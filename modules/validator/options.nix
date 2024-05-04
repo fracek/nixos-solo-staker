@@ -22,6 +22,16 @@
       description = mdDoc "On which network to run the validator";
     };
 
+    nethermind = {
+      metrics = {
+        port = mkOption {
+          type = types.port;
+          default = 6060;
+          description = mdDoc "Port for JSON-RPC server";
+        };
+      };
+    };
+
     web3 = {
       jwtsecret = mkOption {
         type = types.nullOr types.str;
