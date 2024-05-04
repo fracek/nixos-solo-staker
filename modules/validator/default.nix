@@ -26,6 +26,16 @@ in
       };
     };
 
+    networking.firewall = {
+      # https://docs.nethermind.io/fundamentals/security/
+      allowedUDPPorts = [
+        30303
+      ];
+      allowedTCPPorts = [
+        30303
+      ];
+    };
+
     systemd.services."${cfg.chain}-nethermind" =
       let
         stateDir = "${cfg.chain}-nethermind";
