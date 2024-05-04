@@ -22,6 +22,7 @@
       nixosModules = {
         common = ./modules/common;
         validator = ./modules/validator;
+        monitoring = ./modules/monitoring;
       };
 
       nixosConfigurations = {

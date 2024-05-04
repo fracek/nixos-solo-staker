@@ -5,6 +5,7 @@
     inputs.agenix.nixosModules.default
     inputs.self.nixosModules.common
     inputs.self.nixosModules.validator
+    inputs.self.nixosModules.monitoring
   ];
 
   services.validator = {
@@ -15,6 +16,21 @@
       checkpoint = "https://holesky.beaconstate.info/";
       genesis = "https://holesky.beaconstate.info/";
     };
+  };
+
+  services.monitoring = {
+    enable = true;
+    user = config.services.validator.user.name;
+    services = [
+      {
+        unit = "holesky-nethermind";
+        port = config.services.validator.nethermind.metrics.port;
+      }
+      {
+        unit = "holesky-prysm";
+        port = config.services.validator.prysm.metrics.port;
+      }
+    ];
   };
 
   age.secrets.tailscale.file = ./secrets/tailscale.age;
