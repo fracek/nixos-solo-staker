@@ -59,6 +59,7 @@ in
         description = "Nethermind - ${cfg.chain}";
         serviceConfig = lib.mkMerge [
           {
+            Restart = "on-failure";
             User = cfg.user.name;
             StateDirectory = stateDir;
             ExecStart = "${pkgs.nethermind}/bin/nethermind ${scriptArgs}";
@@ -85,6 +86,8 @@ in
           "--${cfg.chain}"
           "--jwt-secret=%d/jwtsecret"
           "--execution-endpoint=${executionEndpoint}"
+          "--monitoring-host=127.0.0.1"
+          "--monitoring-port=${builtins.toString cfg.prysm.metrics.port}"
         ]);
       in
       {
@@ -94,6 +97,7 @@ in
         description = "Prism - ${cfg.chain}";
         serviceConfig = lib.mkMerge [
           {
+            Restart = "on-failure";
             User = cfg.user.name;
             StateDirectory = stateDir;
             ExecStart = "${pkgs.prysm}/bin/beacon-chain ${scriptArgs}";

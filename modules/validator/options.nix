@@ -27,7 +27,17 @@
         port = mkOption {
           type = types.port;
           default = 6060;
-          description = mdDoc "Port for JSON-RPC server";
+          description = mdDoc "Port for prometheus metrics";
+        };
+      };
+    };
+
+    prysm = {
+      metrics = {
+        port = mkOption {
+          type = types.port;
+          default = 8080;
+          description = mdDoc "Port for prometheus metrics";
         };
       };
     };
