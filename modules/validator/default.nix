@@ -13,7 +13,7 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
       pkgs.nethermind
-      pkgs.nimbus
+      pkgs.prysm
     ];
 
     users.users = {
@@ -55,35 +55,39 @@ in
         ];
       };
 
-    /*
-    systemd.services."${cfg.chain}-nimbus" =
+    systemd.services."${cfg.chain}-prysm" =
       let
-        stateDir = "${cfg.chain}-nimbus";
-        elUrl = "http://${cfg.web3.host}:${cfg.web3.port}";
-        scriptArgs = lib.strings.concatStringsSep " " [
-          "--datadir %S/${stateDir}"
-          "--network ${cfg.chain}"
-          "--jwt-secret %d/jwtsecret"
-          "--rest"
-          "--el=${elUrl}"
+        stateDir = "${cfg.chain}-prysm";
+        executionEndpoint = "http://${cfg.web3.host}:${builtins.toString cfg.web3.port}";
+        checkpointSyncArgs = if cfg.sync.checkpoint == null then [ ] else [
+          "--checkpoint-sync-url=${cfg.sync.checkpoint}"
         ];
+        genesisSyncArgs = if cfg.sync.genesis == null then [ ] else [
+          "--genesis-beacon-api-url=${cfg.sync.genesis}"
+        ];
+        scriptArgs = lib.strings.concatStringsSep " " (checkpointSyncArgs ++ genesisSyncArgs ++ [
+          "--accept-terms-of-use"
+          "--datadir=%S/${stateDir}"
+          "--${cfg.chain}"
+          "--jwt-secret=%d/jwtsecret"
+          "--execution-endpoint=${executionEndpoint}"
+        ]);
       in
       {
         enable = true;
         after = [ "network.target" ];
         wantedBy = [ "multi-user.target" ];
-        description = "Nimbus - ${cfg.chain}";
+        description = "Prism - ${cfg.chain}";
         serviceConfig = lib.mkMerge [
           {
             User = cfg.user.name;
             StateDirectory = stateDir;
-            ExecStart = "${pkgs.nimbus}/bin/nimbus ${scriptArgs}";
+            ExecStart = "${pkgs.prysm}/bin/beacon-chain ${scriptArgs}";
           }
           (lib.mkIf (cfg.web3.jwtsecret != null) {
             LoadCredential = [ "jwtsecret:${cfg.web3.jwtsecret}" ];
           })
         ];
       };
-      */
   };
 }

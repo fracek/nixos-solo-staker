@@ -39,5 +39,17 @@
         description = mdDoc "Port for JSON-RPC server";
       };
     };
+    sync = {
+      checkpoint = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = mdDoc "Checkpoint URl for trusted sync";
+      };
+      genesis = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = mdDoc "Genesis URl for trusted sync";
+      };
+    };
   };
 }

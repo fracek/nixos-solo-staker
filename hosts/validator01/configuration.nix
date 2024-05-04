@@ -11,6 +11,10 @@
     enable = true;
     chain = "holesky";
     web3.jwtsecret = config.age.secrets.jwtsecret.path;
+    sync = {
+      checkpoint = "https://holesky.beaconstate.info/";
+      genesis = "https://holesky.beaconstate.info/";
+    };
   };
 
   age.secrets.tailscale.file = ./secrets/tailscale.age;
