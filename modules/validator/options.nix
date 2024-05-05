@@ -47,6 +47,20 @@
       };
     };
 
+    prysm-validator = {
+      wallet-password = mkOption {
+        type = types.path;
+        description = mdDoc "Path to the wallet password file";
+      };
+      metrics = {
+        port = mkOption {
+          type = types.port;
+          default = 8081;
+          description = mdDoc "Port for prometheus metrics";
+        };
+      };
+    };
+
     web3 = {
       jwtsecret = mkOption {
         type = types.nullOr types.str;

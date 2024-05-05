@@ -112,5 +112,37 @@ in
           })
         ];
       };
+
+    systemd.services."${cfg.chain}-validator" =
+      let
+        stateDir = "${cfg.chain}-prysm";
+        scriptArgs = lib.strings.concatStringsSep " " [
+          "--accept-terms-of-use"
+          "--datadir=%S/${stateDir}"
+          "--${cfg.chain}"
+          "--wallet-dir=%S/${stateDir}"
+          "--wallet-password-file=%d/wallepass"
+          "--monitoring-host=127.0.0.1"
+          "--monitoring-port=${builtins.toString cfg.prysm-validator.metrics.port}"
+          "--suggested-fee-recipient=\${VALIDATOR_FEE_RECIPIENT}"
+          "--graffiti=\${VALIDATOR_GRAFFITI}"
+        ];
+      in
+      {
+        enable = true;
+        after = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+        description = "Prism - ${cfg.chain}";
+        serviceConfig = lib.mkMerge [
+          {
+            Restart = "on-failure";
+            User = cfg.user.name;
+            StateDirectory = stateDir;
+            ExecStart = "${pkgs.prysm}/bin/validator ${scriptArgs}";
+            EnvironmentFile = cfg.validator-env;
+            LoadCredential = [ "wallepass:${cfg.prysm-validator.wallet-password}" ];
+          }
+        ];
+      };
   };
 }

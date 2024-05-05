@@ -13,6 +13,7 @@
     chain = "holesky";
     validator-env = config.age.secrets.validator-env.path;
     web3.jwtsecret = config.age.secrets.jwtsecret.path;
+    prysm-validator.wallet-password = config.age.secrets.validator-wallet-password.path;
     sync = {
       checkpoint = "https://holesky.beaconstate.info/";
       genesis = "https://holesky.beaconstate.info/";
@@ -51,6 +52,12 @@
   };
   age.secrets.validator-env = {
     file = ./secrets/validator-env.age;
+    owner = config.services.validator.user.name;
+    group = config.services.validator.user.group;
+    mode = "0440";
+  };
+  age.secrets.validator-wallet-password = {
+    file = ./secrets/validator-wallet-password.age;
     owner = config.services.validator.user.name;
     group = config.services.validator.user.group;
     mode = "0440";
