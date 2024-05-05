@@ -33,6 +33,10 @@
         unit = "holesky-prysm";
         port = config.services.validator.prysm.metrics.port;
       }
+      {
+        unit = "holesky-validator";
+        port = config.services.validator.prysm-validator.metrics.port;
+      }
     ];
   };
 
