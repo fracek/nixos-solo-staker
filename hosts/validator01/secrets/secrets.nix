@@ -9,4 +9,5 @@ in
   "password.age".publicKeys = [ host ] ++ users;
   "jwtsecret.age".publicKeys = [ host ] ++ users;
   "otel-env.age".publicKeys = [ host ] ++ users;
+  "validator-env.age".publicKeys = [ host ] ++ users;
 }

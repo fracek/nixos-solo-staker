@@ -22,6 +22,11 @@
       description = mdDoc "On which network to run the validator";
     };
 
+    validator-env = mkOption {
+      type = types.path;
+      description = mdDoc "Path to the environment file with fee recipient and graffiti";
+    };
+
     nethermind = {
       metrics = {
         port = mkOption {

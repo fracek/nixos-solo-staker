@@ -91,6 +91,7 @@ in
           "--execution-endpoint=${executionEndpoint}"
           "--monitoring-host=127.0.0.1"
           "--monitoring-port=${builtins.toString cfg.prysm.metrics.port}"
+          "--suggested-fee-recipient=\${VALIDATOR_FEE_RECIPIENT}"
         ]);
       in
       {
@@ -104,6 +105,7 @@ in
             User = cfg.user.name;
             StateDirectory = stateDir;
             ExecStart = "${pkgs.prysm}/bin/beacon-chain ${scriptArgs}";
+            EnvironmentFile = cfg.validator-env;
           }
           (lib.mkIf (cfg.web3.jwtsecret != null) {
             LoadCredential = [ "jwtsecret:${cfg.web3.jwtsecret}" ];
