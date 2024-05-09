@@ -84,7 +84,7 @@ in
           "--genesis-beacon-api-url=${cfg.sync.genesis}"
         ];
         mevRelayArgs = if cfg.mev-boost.relays == [ ] then [ ] else [
-          "--mev-relay-endpoint=http://127.0.0.1:${builtins.toString cfg.mev-boost.port}"
+          "--http-mev-relay=http://127.0.0.1:${builtins.toString cfg.mev-boost.port}"
         ];
         scriptArgs = lib.strings.concatStringsSep " " (checkpointSyncArgs ++ genesisSyncArgs ++ mevRelayArgs ++ [
           "--accept-terms-of-use"
