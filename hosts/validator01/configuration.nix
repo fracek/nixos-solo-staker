@@ -79,8 +79,14 @@
   };
 
   # Configuration specific to this machine
+
+  # Automatically shutdown on power loss to avoid db corruption.
   services.apcupsd = {
     enable = true;
+    configText = ''
+      BATTERYLEVEL 20
+      MINUTES 5
+    '';
   };
 
   boot.loader.systemd-boot.enable = true;
