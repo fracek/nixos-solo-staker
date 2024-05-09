@@ -83,7 +83,10 @@ in
         genesisSyncArgs = if cfg.sync.genesis == null then [ ] else [
           "--genesis-beacon-api-url=${cfg.sync.genesis}"
         ];
-        scriptArgs = lib.strings.concatStringsSep " " (checkpointSyncArgs ++ genesisSyncArgs ++ [
+        mevRelayArgs = if cfg.mev-boost.relays == [ ] then [ ] else [
+          "--mev-relay-endpoint=http://127.0.0.1:${builtins.toString cfg.mev-boost.port}"
+        ];
+        scriptArgs = lib.strings.concatStringsSep " " (checkpointSyncArgs ++ genesisSyncArgs ++ mevRelayArgs ++ [
           "--accept-terms-of-use"
           "--datadir=%S/${stateDir}"
           "--${cfg.chain}"
@@ -116,7 +119,10 @@ in
     systemd.services."${cfg.chain}-validator" =
       let
         stateDir = "${cfg.chain}-prysm";
-        scriptArgs = lib.strings.concatStringsSep " " [
+        mevRelayArgs = if cfg.mev-boost.relays == [ ] then [ ] else [
+          "--enable-builder"
+        ];
+        scriptArgs = lib.strings.concatStringsSep " " (mevRelayArgs ++ [
           "--accept-terms-of-use"
           "--datadir=%S/${stateDir}"
           "--${cfg.chain}"
@@ -126,7 +132,7 @@ in
           "--monitoring-port=${builtins.toString cfg.prysm-validator.metrics.port}"
           "--suggested-fee-recipient=\${VALIDATOR_FEE_RECIPIENT}"
           "--graffiti=\${VALIDATOR_GRAFFITI}"
-        ];
+        ]);
       in
       {
         enable = true;
@@ -143,6 +149,31 @@ in
             LoadCredential = [ "wallepass:${cfg.prysm-validator.wallet-password}" ];
           }
         ];
+      };
+
+    systemd.services."${cfg.chain}-mev-boost" =
+      let
+        stateDir = "${cfg.chain}-prysm";
+        relays = lib.strings.concatStringsSep "," cfg.mev-boost.relays;
+        scriptArgs = lib.strings.concatStringsSep " " [
+          "-${cfg.chain}"
+          "-relay-check"
+          "-relays=${relays}"
+          "-min-bid=${cfg.mev-boost.min-bid}"
+          "-addr=127.0.0.1:${builtins.toString cfg.mev-boost.port}"
+        ];
+      in
+      {
+        enable = cfg.mev-boost.relays != [ ];
+        after = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+        description = "MEV Boost - ${cfg.chain}";
+        serviceConfig = {
+          Restart = "on-failure";
+          User = cfg.user.name;
+          StateDirectory = stateDir;
+          ExecStart = "${pkgs.mev-boost}/bin/mev-boost ${scriptArgs}";
+        };
       };
   };
 }

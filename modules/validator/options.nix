@@ -61,6 +61,24 @@
       };
     };
 
+    mev-boost = {
+      min-bid = mkOption {
+        type = types.str;
+        default = "0.3";
+        description = mdDoc "Minimum relay bid";
+      };
+      port = mkOption {
+        type = types.port;
+        default = 18550;
+        description = mdDoc "Port for MEV Boost";
+      };
+      relays = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = mdDoc "List of relays to connect to";
+      };
+    };
+
     web3 = {
       jwtsecret = mkOption {
         type = types.nullOr types.str;
