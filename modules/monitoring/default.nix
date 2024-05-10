@@ -5,11 +5,12 @@ let
   cfg = config.services.monitoring;
 
   servicesScrapeConfigs = map
-    ({ unit, port, ... }: {
+    ({ unit, port, labels, ... }: {
       job_name = "${unit}";
       scrape_interval = "30s";
       static_configs = [
         {
+          inherit labels;
           targets = [
             "127.0.0.1:${builtins.toString port}"
           ];
@@ -46,6 +47,16 @@ let
 
     processors = {
       batch = { };
+
+      resource = {
+        attributes = [
+          {
+            key = "host.name";
+            action = "upsert";
+            value = "${config.networking.hostName}";
+          }
+        ];
+      };
     };
 
     exporters = {
@@ -95,6 +106,10 @@ in
           };
           port = mkOption {
             type = types.port;
+          };
+          labels = mkOption {
+            type = types.attrs;
+            default = { };
           };
         };
       });
