@@ -4,6 +4,32 @@ let
 
   cfg = config.services.monitoring;
 
+  servicesScrapeConfigs = map
+    ({ unit, port, ... }: {
+      job_name = "${unit}";
+      scrape_interval = "30s";
+      static_configs = [
+        {
+          targets = [
+            "127.0.0.1:${builtins.toString port}"
+          ];
+        }
+      ];
+    })
+    cfg.services;
+
+  nodeExporterScrapeConfig = {
+    job_name = config.networking.hostName;
+    scrape_interval = "30s";
+    static_configs = [
+      {
+        targets = [
+          "127.0.0.1:${builtins.toString config.services.prometheus.exporters.node.port}"
+        ];
+      }
+    ];
+  };
+
   settings = {
     receivers = {
       journald = {
@@ -13,19 +39,7 @@ let
       };
       prometheus = {
         config = {
-          scrape_configs = map
-            ({ unit, port, ... }: {
-              job_name = "${unit}";
-              scrape_interval = "10s";
-              static_configs = [
-                {
-                  targets = [
-                    "127.0.0.1:${builtins.toString port}"
-                  ];
-                }
-              ];
-            })
-            cfg.services;
+          scrape_configs = servicesScrapeConfigs ++ [ nodeExporterScrapeConfig ];
         };
       };
     };
@@ -90,6 +104,14 @@ in
 
   config = lib.mkIf cfg.enable {
     users.users.${cfg.user}.extraGroups = [ "systemd-journal" ];
+
+    services.prometheus.exporters = {
+      node = {
+        enable = true;
+        enabledCollectors = [ "systemd" ];
+        port = 9002;
+      };
+    };
 
     systemd.services.opentelemetry-collector = {
       enable = true;
