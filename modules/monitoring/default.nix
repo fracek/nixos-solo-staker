@@ -72,13 +72,13 @@ let
       pipelines = {
         logs = {
           receivers = [ "journald" ];
-          processors = [ "batch" ];
+          processors = [ "batch" "resource" ];
           exporters = [ "loki" ];
         };
 
         metrics = {
           receivers = [ "prometheus" ];
-          processors = [ "batch" ];
+          processors = [ "batch" "resource" ];
           exporters = [ "prometheusremotewrite" ];
         };
       };

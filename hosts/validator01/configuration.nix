@@ -67,24 +67,24 @@
         unit = "holesky-nethermind";
         port = config.services.validator.nethermind.metrics.port;
         labels = {
-          "ethereum.network" = config.services.validator.chain;
-          "service.name" = "nethermind";
+          "ethereum_network" = config.services.validator.chain;
+          "service_name" = "nethermind";
         };
       }
       {
         unit = "holesky-prysm";
         port = config.services.validator.prysm.metrics.port;
         labels = {
-          "ethereum.network" = config.services.validator.chain;
-          "service.name" = "prysm-beacon-chain";
+          "ethereum_network" = config.services.validator.chain;
+          "service_name" = "prysm-beacon-chain";
         };
       }
       {
         unit = "holesky-validator";
         port = config.services.validator.prysm-validator.metrics.port;
         labels = {
-          "ethereum.network" = config.services.validator.chain;
-          "service.name" = "prysm-validator";
+          "ethereum_network" = config.services.validator.chain;
+          "service_name" = "prysm-validator";
         };
       }
     ];
