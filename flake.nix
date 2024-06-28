@@ -2,7 +2,7 @@
   description = "A bootable NixOS system for solo staking.";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     flake-utils.url = "github:numtide/flake-utils";
     agenix.url = "github:ryantm/agenix";
     ethereum.url = "github:nix-community/ethereum.nix";
