@@ -38,7 +38,7 @@
 
   # Run a validator on the Holesky testnet
   services.validator = {
-    enable = true;
+    enable = false;
     chain = "holesky";
     validator-env = config.age.secrets.validator-env.path;
     web3.jwtsecret = config.age.secrets.jwtsecret.path;
@@ -59,7 +59,7 @@
 
   # Monitor the validator services
   services.monitoring = {
-    enable = true;
+    enable = false;
     user = config.services.validator.user.name;
     otel-env = config.age.secrets.otel-env.path;
     services = [

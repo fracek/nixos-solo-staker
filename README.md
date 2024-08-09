@@ -4,6 +4,20 @@ This repository contains my NixOS configuration for home staking.
 
 ## Overview
 
+### Before you start
+
+You should set the cachix cache to `nixos-solo-staking`.
+
+```
+cachix use nixos-solo-staking
+```
+
+### Testing the build
+
+```
+cachix watch-exec nixos-solo-staking nixos-rebuild -- build-vm --flake .#validator01
+```
+
 ### Core
 
 **Agenix**
