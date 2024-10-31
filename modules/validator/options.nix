@@ -18,7 +18,6 @@
 
     chain = mkOption {
       type = types.str;
-      default = "holesky";
       description = mdDoc "On which network to run the validator";
     };
 
