@@ -135,7 +135,7 @@ in
         ]);
       in
       {
-        enable = cfg.prysm-validator.enable;
+        enable = true;
         after = [ "network.target" ];
         wantedBy = [ "multi-user.target" ];
         description = "Prism - ${cfg.chain}";
@@ -164,7 +164,7 @@ in
         ];
       in
       {
-        enable = (cfg.mev-boost.relays != [ ] && cfg.prysm-validator.enable);
+        enable = cfg.mev-boost.relays != [ ];
         after = [ "network.target" ];
         wantedBy = [ "multi-user.target" ];
         description = "MEV Boost - ${cfg.chain}";
