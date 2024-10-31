@@ -43,7 +43,7 @@
     validator-env = config.age.secrets.validator-env.path;
     web3.jwtsecret = config.age.secrets.jwtsecret.path;
     prysm-validator = {
-      enable = false;
+      enable = true;
       wallet-password = config.age.secrets.validator-wallet-password.path;
     };
     mev-boost = {
@@ -62,7 +62,7 @@
 
   # Monitor the validator services
   services.monitoring = {
-    enable = false;
+    enable = true;
     user = config.services.validator.user.name;
     otel-env = config.age.secrets.otel-env.path;
     services = [
