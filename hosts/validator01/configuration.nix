@@ -42,7 +42,10 @@
     chain = "mainnet";
     validator-env = config.age.secrets.validator-env.path;
     web3.jwtsecret = config.age.secrets.jwtsecret.path;
-    prysm-validator.wallet-password = config.age.secrets.validator-wallet-password.path;
+    prysm-validator = {
+      enable = false;
+      wallet-password = config.age.secrets.validator-wallet-password.path;
+    };
     mev-boost = {
       min-bid = "0.01";
       relays = [

@@ -47,6 +47,7 @@
     };
 
     prysm-validator = {
+      enable = mkEnableOption (mdDoc "Enable validator");
       wallet-password = mkOption {
         type = types.path;
         description = mdDoc "Path to the wallet password file";
