@@ -95,7 +95,6 @@ in
           "--monitoring-host=127.0.0.1"
           "--monitoring-port=${builtins.toString cfg.prysm.metrics.port}"
           "--suggested-fee-recipient=\${VALIDATOR_FEE_RECIPIENT}"
-          "--suggested-gas-limit=36000000"
         ]);
       in
       {
